@@ -30,6 +30,7 @@ need anything fancy.
 - Equipment that is down is treated as the most urgent, since that is how she lost the $2,000 job.
 - Estimated value is optional. It exists only so her husband can see open value.
 - At 15 to 20 new jobs a week, browser storage is enough for a first version she can try this week.
+- Denise is not technical, so the screen uses plain words (Call now, Call soon, Call today) instead of scores.
 
 ## 1c. Questions I would ask Denise next
 
@@ -43,11 +44,12 @@ need anything fancy.
 ## 2. What this prototype does
 
 - **Call list:** the jobs that need a call today, each with a one-tap phone link and the reason it is on the list.
-- **Urgency as temperature:** each job has a thermometer gauge. The longer a job waits, the warmer it gets, so the most at-risk job is always at the top.
+- **Urgency as temperature:** each job has a thermometer gauge and a plain label (Call now, Call soon, Call today). The longer a job waits, the warmer it gets, so the most at-risk job is always at the top.
 - **Stage board:** every job sits on a shelf for its stage, with a count and dollar value.
 - **Numbers for her husband:** open jobs, calls to make today, jobs waiting on a yes, and open value.
 - **One intake form:** phone, website, text, referral and repeat jobs are all added the same way. Paste a customer's text and the phone number and urgency are filled in.
-- **One-tap updates:** "Called, no change" resets the waiting clock, and a next-stage button moves the job forward.
+- **One-tap updates:** "Called, no change" resets the waiting clock, a next-stage button moves the job forward, and Edit changes any detail.
+- **Built-in guide:** a short "How to use this" box at the top that can be collapsed.
 
 Deliberately left out: technician scheduling. Denise said she knows where everyone is
 and it can wait until later.
@@ -65,19 +67,23 @@ and it can wait until later.
 
 ### The temperature score
 
-    temperature = -18 + (6 x days since last contact) + (10 if equipment is down)
+    temperature = -18 + (6 x days since last contact) + (24 if equipment is down)
 
 The value is capped between -18 and +12 degrees. Jobs are sorted warmest first.
+Scheduled and done jobs always sit at -18, because nothing is owed to the customer.
 
-| Range       | Color      | Meaning            |
-| ----------- | ---------- | ------------------ |
-| below -8    | light blue | Fresh              |
-| -8 to -1    | teal       | Cooling off        |
-| 0 to 5      | amber      | Warming, call soon |
-| 6 and above | red        | Spoiling, call now |
+| Label      | When                                  | Color                |
+| ---------- | ------------------------------------- | -------------------- |
+| Call now   | 6 and above                           | red                  |
+| Call soon  | 0 to 5                                | amber                |
+| Call today | below 0, but still on the call list   | teal or light blue   |
+| On track   | not on the call list                  | -                    |
+| Booked     | scheduled                             | -                    |
+| Done       | finished                              | -                    |
 
-Calling a customer ("Called, no change") or moving a job to the next stage resets its
-clock to -18.
+A job with equipment down starts at +6, so it is red from the moment it is added and
+stays near the top until it is scheduled. Calling a customer ("Called, no change") or
+moving a job to the next stage resets its waiting clock.
 
 ## 4. Run it
 
@@ -91,21 +97,21 @@ are loaded. To go back to the sample data, click **Reset demo** in the header.
 
 ## 4b. Quick demo script
 
-1. Open the page and look at the top card: Harbor Grill (freezer down) is hottest.
-2. Click **Called, no change** on a job. Its temperature drops back to -18.
+1. Open the page and look at the top card: Harbor Grill (freezer down) is at the top and says **Call now**.
+2. Click **Called, no change** on Metro Cold Storage. It leaves the call list because it was called today.
 3. Click **Start quote** on a new request. It moves to the "Quote to send" shelf.
-4. Click **+ New job**, paste a text like `Walk-in cooler at Marco's not cooling, call 555-201-3344`. Phone and "Equipment is down" fill in. Save it and it jumps to the top.
-5. Move a job to **Done** and watch the open value and counts update.
+4. Click **+ New job**, paste a text like `Walk-in cooler at Marco's not cooling, call 555-201-3344`. Phone and "Equipment is down" fill in. Save it and it joins Harbor Grill at the top.
+5. Click **Edit** on any card to change details, or move a job to **Done** and watch the open value and counts update.
 
 ## 5. Project structure
 
-    index.html        Page layout and the new/edit job dialog
+    index.html        Page layout, how-to box and the new/edit job dialog
     README.md         This file
     css/styles.css    All styling: gauges, shelves, dialog, responsive rules
     js/store.js       Stages, sample data, load/save (localStorage)
-    js/logic.js       Business rules: call list, reasons, temperature, totals
+    js/logic.js       Business rules: call list, reasons, temperature, labels, totals
     js/app.js         Draws the screen and handles clicks and the form
-    js/extras.js      Paste-a-text autofill and the Reset demo button
+    js/extras.js      Paste-a-text autofill, Reset demo button, refresh on return
 
 Scripts load in this order (set in `index.html`): `store.js`, `logic.js`, `app.js`, `extras.js`.
 
@@ -129,6 +135,7 @@ Scripts load in this order (set in `index.html`): `store.js`, `logic.js`, `app.j
 
 - **Follow-up delay:** in `logic.js`, change the `2` in `d >= 2`.
 - **How fast jobs warm up:** in `logic.js`, change `6 * days(...)` inside `temp()`.
+- **Label wording:** in `logic.js`, edit `heatLabel()`.
 - **Add a stage:** add it to `STAGES` in `store.js`, then to `NEXT` and `NEXTLBL` in `logic.js`.
 - **Colors and fonts:** the variables at the top of `styles.css`.
 
@@ -151,3 +158,4 @@ Scripts load in this order (set in `index.html`): `store.js`, `logic.js`, `app.j
 - **Plain HTML, CSS and JavaScript:** runs anywhere with nothing to install, so Denise or a reviewer can open it immediately.
 - **Small JS files:** data, rules and screen are separate, so a backend or auto-capture can be added later.
 - **One screen:** Denise asked for one thing, and said she would use it every morning if it did just that.
+- **Plain words over numbers:** a non-technical owner should know what to do without reading a score.

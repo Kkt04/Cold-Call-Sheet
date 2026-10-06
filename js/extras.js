@@ -19,7 +19,7 @@
         }
   
         if (
-          /freezer (is )?down|not cooling|stopped cooling|no cool|too warm|leak|emergency|urgent|asap|spoil/i.test(
+            /\bdown\b|not cooling|stopped cooling|no cool|too warm|leak|emergency|urgent|asap|spoil/i.test(
             t
           )
         ) {
@@ -42,7 +42,12 @@
   
       lastAuto = "";
     });
-  
+    // Refresh when the tab comes back, so days waiting are up to date each morning
+    document.addEventListener("visibilitychange", function () {
+        if (!document.hidden && typeof render === "function") {
+            render();
+        }
+        });
     // Reset to the sample data
     $("reset").addEventListener("click", function () {
       if (confirm("Reset to sample data? Your changes will be lost.")) {

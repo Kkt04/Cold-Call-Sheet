@@ -41,7 +41,10 @@ function card(j, compact) {
       NEXTLBL[j.stage] +
       "</button>"
     : "";
-
+    var edit =
+    '<button class="btn sm" data-a="edit" data-id="' +
+    j.id +
+    '">Edit</button>';
   var called =
     j.stage !== "done"
       ? '<button class="btn sm" data-a="called" data-id="' +
@@ -72,8 +75,8 @@ function card(j, compact) {
     '<span class="deg" style="color:' +
     tempColor(t) +
     '">' +
-    t +
-    "°</span>" +
+    heatLabel(j, t) +
+    "</span>" +
     "</div>" +
     (r && !compact
       ? '<div class="why">' + esc(r) + "</div>"
@@ -97,6 +100,7 @@ function card(j, compact) {
     tel +
     called +
     nx +
+    edit +
     "</div>" +
     "</div>" +
     "</article>"

@@ -19,11 +19,41 @@ function days(t) {
 }
 
 // -18 (fresh) up to +12 (spoiling).
-// Waiting warms it, equipment down warms it faster.
+// Waiting warms it. Equipment down adds 24, so it is red from the start.
+// Scheduled and done jobs owe nothing, so they stay at -18.
 function temp(j) {
-  var t = -18 + (6 * days(j.last)) + (j.urgent ? 10 : 0);
+  if (j.stage === "sched" || j.stage === "done") {
+    return -18;
+  }
+
+  var t = -18 + (6 * days(j.last)) + (j.urgent ? 24 : 0);
 
   return Math.max(-18, Math.min(12, t));
+}
+
+// Plain-words label shown on each card instead of a number.
+function heatLabel(j, t) {
+  if (j.stage === "done") {
+    return "Done";
+  }
+
+  if (j.stage === "sched") {
+    return "Booked";
+  }
+
+  if (!reason(j)) {
+    return "On track";
+  }
+
+  if (t >= 6) {
+    return "Call now";
+  }
+
+  if (t >= 0) {
+    return "Call soon";
+  }
+
+  return "Call today";
 }
 
 function tempColor(t) {
