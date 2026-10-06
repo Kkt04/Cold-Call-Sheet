@@ -1,7 +1,5 @@
 # Cold Call Sheet
 
-**Live demo:** https://kkt04.github.io/Cold-Call-Sheet/
-
 A one-screen follow-up tracker for a small commercial refrigeration repair shop.
 Every morning it answers one question: **who do I need to call today?**
 
