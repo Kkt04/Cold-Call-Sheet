@@ -1,0 +1,56 @@
+(function () {
+    var $ = function (id) {
+      return document.getElementById(id);
+    };
+  
+    var paste = $("f-paste");
+    var lastAuto = "";
+  
+    // Paste a text or email:
+    // fill phone, job and the equipment-down flag
+    if (paste) {
+      paste.addEventListener("input", function () {
+        var t = paste.value;
+  
+        var p = t.match(/(\+?\d[\d\-\s().]{8,}\d)/);
+  
+        if (p && !$("f-phone").value) {
+          $("f-phone").value = p[1].trim();
+        }
+  
+        if (
+          /freezer (is )?down|not cooling|stopped cooling|no cool|too warm|leak|emergency|urgent|asap|spoil/i.test(
+            t
+          )
+        ) {
+          $("f-urg").checked = true;
+        }
+  
+        var job = $("f-job");
+  
+        if (job.value === "" || job.value === lastAuto) {
+          lastAuto = t.trim().slice(0, 120);
+          job.value = lastAuto;
+        }
+      });
+    }
+  
+    $("dlg").addEventListener("close", function () {
+      if (paste) {
+        paste.value = "";
+      }
+  
+      lastAuto = "";
+    });
+  
+    // Reset to the sample data
+    $("reset").addEventListener("click", function () {
+      if (confirm("Reset to sample data? Your changes will be lost.")) {
+        try {
+          localStorage.removeItem(KEY);
+        } catch (e) {}
+  
+        location.reload();
+      }
+    });
+  })();

@@ -1,47 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cold Call Sheet</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cold Call Sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-<header class="head">
-  <div><h1>Cold call sheet</h1><p id="date"></p></div>
-  <button class="btn solid" id="add">+ New job</button>
-</header>
-<main>
-  <section class="stats" id="stats" aria-label="Totals"></section>
-  <h2>Call these first <small>the warmer the job, the sooner it spoils</small></h2>
-  <section id="today"></section>
-  <h2>Every job, by stage</h2>
-  <section class="board" id="board"></section>
-</main>
+  <header class="head">
+    <div>
+      <h1>Cold call sheet</h1>
+      <p id="date"></p>
+    </div>
 
-<dialog id="dlg">
-  <h2 id="dt">New job</h2>
-  <label>Customer<input id="f-name" type="text"></label>
-  <label>Phone<input id="f-phone" type="tel"></label>
-  <label>What's wrong<input id="f-job" type="text" placeholder="Walk-in cooler not cooling"></label>
-  <div class="two">
-    <label>Came from<select id="f-src"><option>Phone</option><option>Website form</option><option>Text</option><option>Referral</option><option>Repeat customer</option></select></label>
-    <label>Est. value ($)<input id="f-val" type="number" min="0"></label>
-  </div>
-  <label>Stage<select id="f-stage"></select></label>
-  <label>Notes<textarea id="f-notes" rows="2"></textarea></label>
-  <label class="chk"><input id="f-urg" type="checkbox"> Equipment is down right now</label>
-  <div class="foot">
-    <button class="btn" id="del" type="button">Delete</button>
-    <button class="btn" id="cancel" type="button">Cancel</button>
-    <button class="btn solid" id="save" type="button">Save job</button>
-  </div>
-</dialog>
+    <div class="headbtns">
+      <button class="btn solid" id="add">+ New job</button>
+      <button class="btn" id="reset" type="button">Reset demo</button>
+    </div>
+  </header>
 
-<script src="js/store.js"></script>
-<script src="js/logic.js"></script>
-<script src="js/app.js"></script>
+  <main>
+    <section class="stats" id="stats" aria-label="Totals"></section>
+
+    <h2>
+      Call these first
+      <small>the warmer the job, the sooner it spoils</small>
+    </h2>
+
+    <section id="today"></section>
+
+    <h2>Every job, by stage</h2>
+
+    <section class="board" id="board"></section>
+  </main>
+
+  <dialog id="dlg">
+    <h2 id="dt">New job</h2>
+
+    <label>
+      Paste a text or email (optional)
+      <textarea
+        id="f-paste"
+        rows="2"
+        placeholder="Paste the customer's message. Phone and urgency fill in automatically."
+      ></textarea>
+    </label>
+
+    <label>
+      Customer
+      <input id="f-name" type="text">
+    </label>
+
+    <label>
+      Phone
+      <input id="f-phone" type="tel">
+    </label>
+
+    <label>
+      What's wrong
+      <input
+        id="f-job"
+        type="text"
+        placeholder="Walk-in cooler not cooling"
+      >
+    </label>
+
+    <div class="two">
+      <label>
+        Came from
+        <select id="f-src">
+          <option>Phone</option>
+          <option>Website form</option>
+          <option>Text</option>
+          <option>Referral</option>
+          <option>Repeat customer</option>
+        </select>
+      </label>
+
+      <label>
+        Est. value ($, optional)
+        <input id="f-val" type="number" min="0">
+      </label>
+    </div>
+
+    <label>
+      Stage
+      <select id="f-stage"></select>
+    </label>
+
+    <label>
+      Notes
+      <textarea id="f-notes" rows="2"></textarea>
+    </label>
+
+    <label class="chk">
+      <input id="f-urg" type="checkbox">
+      Equipment is down right now
+    </label>
+
+    <div class="foot">
+      <button class="btn" id="del" type="button">Delete</button>
+      <button class="btn" id="cancel" type="button">Cancel</button>
+      <button class="btn solid" id="save" type="button">Save job</button>
+    </div>
+  </dialog>
+
+  <script src="js/store.js"></script>
+  <script src="js/logic.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/extras.js"></script>
 </body>
 </html>
